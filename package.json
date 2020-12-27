@@ -4,13 +4,20 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "karma start config/karma.conf.js"
   },
-  "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "date-fns": "^2.16.1"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "karma": "^5.2.3",
+    "karma-chai": "^0.1.0",
+    "karma-firefox-launcher": "^2.1.0",
+    "karma-mocha": "^2.0.1",
+    "mocha": "^8.2.1"
   }
 }
