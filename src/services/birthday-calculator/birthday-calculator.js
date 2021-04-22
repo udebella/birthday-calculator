@@ -1,5 +1,5 @@
-export const birthdayCalculator = () => {
+export const birthdayCalculator = ({today, differenceFunction}) => {
     return {
-        compute: () => ({difference: 5})
+        compute: birthday => ({difference: differenceFunction(today, birthday)})
     }
 }
