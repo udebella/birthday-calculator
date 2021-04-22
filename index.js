@@ -1,6 +1,5 @@
-import dateFns from 'date-fns'
-
-const {format, differenceInYears, addYears, differenceInMonths, addMonths, differenceInWeeks, addWeeks, differenceInDays, addDays, differenceInHours, addHours, differenceInMinutes, addMinutes, differenceInSeconds, addSeconds} = dateFns
+import {format, differenceInYears, addYears, differenceInMonths, addMonths, differenceInWeeks, addWeeks, differenceInDays,
+    addDays, differenceInHours, addHours, differenceInMinutes, addMinutes, differenceInSeconds, addSeconds} from 'https://deno.land/x/date_fns/index.js'
 
 const today = new Date()
 
