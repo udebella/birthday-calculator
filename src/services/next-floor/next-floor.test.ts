@@ -1,17 +1,13 @@
 import { expect, it } from "https://deno.land/x/expect@v0.2.6/mod.ts";
 import { nextFloor } from "./next-floor.ts";
 
-it("computes next level for 0", () => {
-  const next = nextFloor(0);
+[0, 1].forEach(n => {
+  it(`computes next level for ${n}`, () => {
+    const next = nextFloor(n);
 
-  expect(next).toBe(1);
-});
-
-it("computes next level for 1", () => {
-  const next = nextFloor(1);
-
-  expect(next).toBe(2);
-});
+    expect(next).toBe(n + 1);
+  });
+})
 
 it("computes next level for 10", () => {
   const next = nextFloor(10);
