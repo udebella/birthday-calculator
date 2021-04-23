@@ -7,6 +7,12 @@ it("computes next level for 0", () => {
   expect(next).toBe(1);
 });
 
+it("computes next level for 1", () => {
+  const next = nextFloor(1);
+
+  expect(next).toBe(2);
+});
+
 it("computes next level for 10", () => {
   const next = nextFloor(10);
 
