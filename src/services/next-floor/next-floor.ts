@@ -1,9 +1,6 @@
-export function nextFloor(number: number) {
-  if (number >= 20) {
-    return 30;
-  }
+export function nextFloor(number: number): number {
   if (number >= 10) {
-    return 20;
+    return nextFloor(Math.floor(number / 10)) * 10;
   }
   return number + 1;
 }
