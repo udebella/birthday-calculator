@@ -1,7 +1,8 @@
 import { expect, it } from "https://deno.land/x/expect@v0.2.6/mod.ts";
 import { nextFloor } from "./next-floor.ts";
 
-[0, 1].forEach(n => {
+const smallerThan10 = [...Array(10).keys()]
+smallerThan10.forEach(n => {
   it(`computes next level for ${n}`, () => {
     const next = nextFloor(n);
 
