@@ -21,3 +21,9 @@ it("computes next level for 11", () => {
 
   expect(next).toBe(20);
 });
+
+it("computes next level for 20", () => {
+  const next = nextFloor(20);
+
+  expect(next).toBe(30);
+});
