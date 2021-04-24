@@ -22,7 +22,7 @@ const familly = {
 
 Object.entries(familly)
   .forEach(([name, birthDate]) => {
-    console.log(name, format(birthDate, "dd MMMM yyyy HH:mm:ss"));
+    console.log(name, format(birthDate, "dd MMMM yyyy HH:mm:ss", {}));
     console.table(compute(birthDate));
   });
 
