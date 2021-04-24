@@ -8,12 +8,13 @@ it("should display the result of the difference function between given dates", (
   const addFunction = mock.fn(() => new Date(2021, 3, 24));
   const calculator = birthdayCalculator({
     today,
-    differenceTypes: [{ differenceFunction, addFunction }],
+    differenceTypes: [{ name: "example", differenceFunction, addFunction }],
   });
 
   const result = calculator.compute(birthday);
 
   expect(result).toEqual([{
+    name: "example",
     difference: 5,
     nextFloor: 6,
     dateForNext: new Date(2021, 3, 24),

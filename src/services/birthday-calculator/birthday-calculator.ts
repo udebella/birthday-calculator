@@ -20,7 +20,7 @@ type DifferenceFunction = (today: Date, birthday: Date) => number;
 type AddFunction = (today: Date, difference: number) => Date;
 
 interface DifferenceType {
-  name?: string;
+  name: string;
   differenceFunction: DifferenceFunction;
   addFunction: AddFunction;
 }
@@ -70,10 +70,11 @@ export const birthdayCalculator = (
   return {
     compute: (birthday: Date) =>
       differenceTypes
-        .map(({ differenceFunction, addFunction }) => {
+        .map(({ name, differenceFunction, addFunction }) => {
           const difference = differenceFunction(today, birthday);
           const nextFloor = nextFloorFunction(difference);
           return ({
+            name,
             difference,
             nextFloor,
             dateForNext: addFunction(birthday, nextFloor),
