@@ -1,59 +1,13 @@
+import {format} from "https://deno.land/x/date_fns/index.js";
 import {
-  addDays,
-  addHours,
-  addMinutes,
-  addMonths,
-  addSeconds,
-  addWeeks,
-  addYears,
-  differenceInDays,
-  differenceInHours,
-  differenceInMinutes,
-  differenceInMonths,
-  differenceInSeconds,
-  differenceInWeeks,
-  differenceInYears,
-  format,
-} from "https://deno.land/x/date_fns/index.js";
+  birthdayCalculator,
+  differences as differenceTypes,
+} from "./src/services/birthday-calculator/birthday-calculator.ts";
 
-const today = new Date();
-
-const differences = {
-  years: { differenceFunction: differenceInYears, addFunction: addYears },
-  months: { differenceFunction: differenceInMonths, addFunction: addMonths },
-  weeks: { differenceFunction: differenceInWeeks, addFunction: addWeeks },
-  days: { differenceFunction: differenceInDays, addFunction: addDays },
-  hours: { differenceFunction: differenceInHours, addFunction: addHours },
-  minutes: { differenceFunction: differenceInMinutes, addFunction: addMinutes },
-  seconds: { differenceFunction: differenceInSeconds, addFunction: addSeconds },
-};
-
-const nextFloor = (number, step = 0) => {
-  if (number / 10 < 1) {
-    return Math.ceil(number);
-  } else {
-    return nextFloor(number / 10, step + 1) * 10;
-  }
-};
-
-const compute = (birthDate) =>
-  ({ differenceFunction, addFunction }) => {
-    const difference = differenceFunction(today, birthDate);
-    const nextFloor1 = nextFloor(difference);
-    return {
-      yourAgeIn: difference,
-      nextLevel: nextFloor1,
-      dateForNextLevel: format(
-        addFunction(birthDate, nextFloor1),
-        "dd MMMM yyyy HH:mm:ss",
-      ),
-    };
-  };
-
-const computeFor = (calculator) =>
-  Object.entries(differences)
-    .map(([name, fns]) => [name, calculator(fns)])
-    .reduce((current, [name, things]) => ({ ...current, [name]: things }), {});
+const { compute } = birthdayCalculator({
+  today: new Date(),
+  differenceTypes,
+});
 
 const familly = {
   Ubu: new Date(1990, 10, 7, 15, 0, 0, 0),
@@ -69,18 +23,18 @@ const familly = {
 Object.entries(familly)
   .forEach(([name, birthDate]) => {
     console.log(name, format(birthDate, "dd MMMM yyyy HH:mm:ss"));
-    console.table(computeFor(compute(birthDate)));
+    console.table(compute(birthDate));
   });
 
-// 2 (x - naissanceSiff) = x - naissanceMamounette
-// 2naissanceSiff - naissanceMamounette = x
-
-console.log(
-  format(
-    addDays(
-      familly.Mamounette,
-      2 * differenceInDays(familly.Ubu, familly.Mamounette),
-    ),
-    "dd MMMM yyyy HH:mm:ss",
-  ),
-);
+// 2 (x - age1) = x - age2
+// 2age1 - age2 = x
+// const age1 = differenceInDays(familly.Helolo, today)
+// const age2 = differenceInDays(familly.Ubu, today)
+// const ratio = 2
+// const middle = (ratio * age1 - age2) / (ratio - 1)
+// const middleAge = addDays(today, middle)
+// console.log(
+//   format(middleAge, "dd MMMM yyyy HH:mm:ss"),
+//   differenceInDays(middleAge, familly.Ubu),
+//   differenceInDays(middleAge, familly.Helolo),
+// );
