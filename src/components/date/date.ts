@@ -2,6 +2,7 @@ import { format } from "../../deps.ts";
 import { CustomComponent } from "../component.ts";
 
 interface Dependencies {
+  // deno-lint-ignore no-explicit-any
   customWindow: any;
   dateGenerator: () => Date;
 }
