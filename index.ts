@@ -1,4 +1,4 @@
-import {format} from "https://deno.land/x/date_fns/index.js";
+import { format } from "./src/deps.ts";
 import {
   birthdayCalculator,
   differences as differenceTypes,
