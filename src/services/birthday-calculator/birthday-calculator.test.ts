@@ -1,5 +1,5 @@
 import { birthdayCalculator } from "./birthday-calculator.ts";
-import {expect, it, mock} from "../../deps.test.ts";
+import { expect, it, mock } from "../../deps.test.ts";
 
 it("should display the result of the difference function between given dates", () => {
   const today = new Date(2021, 3, 23);

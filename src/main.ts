@@ -1,3 +1,3 @@
-import {componentWith} from "./components/date/date.ts";
+import { componentWith } from "./components/date/date.ts";
 
-componentWith({customWindow: window, dateGenerator: () => new Date()})
+componentWith({ customWindow: window, dateGenerator: () => new Date() });
