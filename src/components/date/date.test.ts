@@ -23,7 +23,7 @@ describe("Date component", () => {
     customWindow.document.querySelector("body").append(componentInstance);
   });
 
-  it("displays current date when no date attribute given", async () => {
+  it("displays current date when no date attribute given", () => {
     const element = customWindow.document.querySelector(
       "[data-test=testedComponent]",
     );
