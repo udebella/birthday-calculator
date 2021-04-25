@@ -1,5 +1,5 @@
 import { nextFloor } from "./next-floor.ts";
-import { expect, it } from "../../deps.ts";
+import {expect, it} from "../../deps.test.ts";
 
 const smallerThan10 = [...Array(10).keys()];
 smallerThan10.forEach((n) => {
