@@ -1603,7 +1603,7 @@ function format(dirtyDate, dirtyFormatStr, dirtyOptions) {
 function cleanEscapedString(input) {
     return input.match(escapedStringRegExp)[1].replace(doubleQuoteRegExp, "'");
 }
-const componentWith1 = ({ customWindow , dateGenerator  })=>{
+const componentWith = ({ customWindow , dateGenerator  })=>{
     class BCDateComponent extends customWindow.HTMLElement {
         constructor(){
             super();
@@ -1622,4 +1622,7 @@ const componentWith1 = ({ customWindow , dateGenerator  })=>{
     customWindow.customElements.define(BCDateComponent.componentName(), BCDateComponent);
     return BCDateComponent;
 };
-export { componentWith1 as componentWith };
+componentWith({
+    customWindow: window,
+    dateGenerator: ()=>new Date()
+});
