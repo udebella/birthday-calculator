@@ -13,18 +13,15 @@ export const componentWith = (
   class BCDateComponent extends customWindow.HTMLElement {
     constructor() {
       super();
+      this.date = dateGenerator();
     }
 
     static componentName(): string {
       return "bc-date";
     }
 
-    get date() {
-      return dateGenerator();
-    }
-
-    connectedCallback() {
-      this.innerHTML = format(this.date, "dd MMMM yyyy HH:mm:ss", {});
+    set date(date: Date) {
+      this.innerHTML = format(date, "dd MMMM yyyy HH:mm:ss", {});
     }
   }
 

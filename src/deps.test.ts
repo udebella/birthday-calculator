@@ -2,6 +2,7 @@ import jsdom from "https://dev.jspm.io/jsdom";
 
 export {
   afterEach,
+  beforeAll,
   beforeEach,
   describe,
   it,
