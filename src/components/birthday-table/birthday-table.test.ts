@@ -28,4 +28,15 @@ describe("Birthday Table component", () => {
     const todayDate = element.querySelector("[data-test=today]");
     expect(todayDate.date).toBeUndefined();
   });
+
+  it("displays birthday date", () => {
+    const element = customWindow.document.querySelector(
+      "[data-test=testedComponent]",
+    );
+
+    element.birthdate = new Date(1990, 10, 7);
+
+    const todayDate = element.shadowRoot.querySelector("[data-test=birthdate]");
+    expect(todayDate.date).toEqual(new Date(1990, 10, 7));
+  });
 });
