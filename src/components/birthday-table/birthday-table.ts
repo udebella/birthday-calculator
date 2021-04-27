@@ -29,8 +29,8 @@ export const componentWith = (
 
   const template = customWindow.document.createElement("template");
   template.innerHTML = `
-    <bc-date data-test="today"></bc-date>
-    <bc-date data-test="birthdate"></bc-date>
+    <div><bc-date data-test="today"></bc-date></div>
+    <div><bc-date data-test="birthdate"></bc-date></div>
   `;
 
   customWindow.customElements.define(
