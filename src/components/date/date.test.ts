@@ -14,7 +14,7 @@ describe("Date component", () => {
   beforeAll(() => {
     componentWith({
       customWindow,
-      dateGenerator: () => today,
+      dateGenerator: () => today ?? new Date(),
     });
   });
 
