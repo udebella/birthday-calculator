@@ -1607,22 +1607,45 @@ const componentWith = ({ customWindow , dateGenerator  })=>{
     class BCDateComponent extends customWindow.HTMLElement {
         constructor(){
             super();
+            this.date = dateGenerator();
         }
         static componentName() {
             return "bc-date";
         }
-        get date() {
-            return dateGenerator();
-        }
-        connectedCallback() {
-            this.innerHTML = format(this.date, "dd MMMM yyyy HH:mm:ss", {
+        set date(date) {
+            this.innerHTML = format(date, "dd MMMM yyyy HH:mm:ss", {
             });
         }
     }
     customWindow.customElements.define(BCDateComponent.componentName(), BCDateComponent);
     return BCDateComponent;
 };
+const componentWith1 = ({ customWindow  })=>{
+    class BCBirthdayTable extends customWindow.HTMLElement {
+        constructor(){
+            super();
+            this.attachShadow({
+                mode: "open"
+            });
+            this.shadowRoot.appendChild(template.content.cloneNode(true));
+            this.birthdateComponent = this.shadowRoot.querySelector("[data-test=birthdate]");
+        }
+        static componentName() {
+            return "bc-birthday-table";
+        }
+        set birthdate(birthdate) {
+            this.birthdateComponent.date = birthdate;
+        }
+    }
+    const template = customWindow.document.createElement("template");
+    template.innerHTML = `\n    <div><bc-date data-test="today"></bc-date></div>\n    <div><bc-date data-test="birthdate"></bc-date></div>\n  `;
+    customWindow.customElements.define(BCBirthdayTable.componentName(), BCBirthdayTable);
+    return BCBirthdayTable;
+};
 componentWith({
     customWindow: window,
     dateGenerator: ()=>new Date()
+});
+componentWith1({
+    customWindow: window
 });

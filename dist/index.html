@@ -7,6 +7,13 @@
   <script src="./application.js" type="module"></script>
 </head>
 <body>
-<bc-date></bc-date>
+<bc-birthday-table></bc-birthday-table>
+
+<script lang="js">
+  // TODO remove this code when date input component is added
+  customElements.whenDefined('bc-birthday-table').then(() => {
+    document.querySelector('bc-birthday-table').birthdate = new Date(1990, 10, 7);
+  });
+</script>
 </body>
 </html>
