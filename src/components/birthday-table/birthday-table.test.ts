@@ -50,7 +50,7 @@ describe("Birthday Table component", () => {
     const differencesList = element.shadowRoot.querySelector(
       "[data-test=differences-list]",
     );
-    expect(differencesList).not.toBeNull();
+    expect(differencesList.classList.contains("hidden")).toBe(false);
   });
 
   it("does not displays differences lines by default", () => {

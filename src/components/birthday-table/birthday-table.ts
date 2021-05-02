@@ -16,6 +16,9 @@ export const componentWith = (
       this.birthdateComponent = this.shadowRoot.querySelector(
         "[data-test=birthdate]",
       );
+      this.differencesListComponent = this.shadowRoot.querySelector(
+        "[data-test=differences-list]",
+      );
     }
 
     static componentName(): string {
@@ -24,6 +27,7 @@ export const componentWith = (
 
     set birthdate(birthdate: Date) {
       this.birthdateComponent.date = birthdate;
+      this.differencesListComponent.classList.remove("hidden");
     }
   }
 
