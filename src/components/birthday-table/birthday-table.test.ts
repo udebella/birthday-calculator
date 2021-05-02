@@ -40,7 +40,7 @@ describe("Birthday Table component", () => {
     expect(todayDate.date).toEqual(new Date(1990, 10, 7));
   });
 
-  it("displays differences lines", () => {
+  it("displays differences lines when we give a birthdate date", () => {
     const element = customWindow.document.querySelector(
       "[data-test=testedComponent]",
     );
@@ -51,5 +51,16 @@ describe("Birthday Table component", () => {
       "[data-test=differences-list]",
     );
     expect(differencesList).not.toBeNull();
+  });
+
+  it("does not displays differences lines by default", () => {
+    const element = customWindow.document.querySelector(
+      "[data-test=testedComponent]",
+    );
+
+    const differencesList = element.shadowRoot.querySelector(
+      "[data-test=differences-list]",
+    );
+    expect(differencesList.classList.contains("hidden")).toBe(true);
   });
 });

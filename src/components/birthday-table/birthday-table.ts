@@ -31,7 +31,7 @@ export const componentWith = (
   template.innerHTML = `
     <div><bc-date data-test="today"></bc-date></div>
     <div><bc-date data-test="birthdate"></bc-date></div>
-    <div data-test="differences-list"></div>
+    <div data-test="differences-list" class="hidden"></div>
   `;
 
   customWindow.customElements.define(
