@@ -39,4 +39,17 @@ describe("Birthday Table component", () => {
     const todayDate = element.shadowRoot.querySelector("[data-test=birthdate]");
     expect(todayDate.date).toEqual(new Date(1990, 10, 7));
   });
+
+  it("displays differences lines", () => {
+    const element = customWindow.document.querySelector(
+      "[data-test=testedComponent]",
+    );
+
+    element.birthdate = new Date(1990, 10, 7);
+
+    const differencesList = element.shadowRoot.querySelector(
+      "[data-test=differences-list]",
+    );
+    expect(differencesList).not.toBeNull();
+  });
 });
