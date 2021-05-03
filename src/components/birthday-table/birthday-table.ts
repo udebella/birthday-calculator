@@ -28,6 +28,7 @@ export const componentWith = (
     set birthdate(birthdate: Date) {
       this.birthdateComponent.date = birthdate;
       this.differencesListComponent.classList.remove("hidden");
+      this.differencesListComponent.innerHTML = "";
       this.differencesListComponent.appendChild(templateLine.content.cloneNode(
         true,
       ));

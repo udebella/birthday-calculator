@@ -76,4 +76,18 @@ describe("Birthday Table component", () => {
     );
     expect(differencesList.textContent).toBe("name");
   });
+
+  it("does not pile up differences line when birthdate changes", () => {
+    const element = customWindow.document.querySelector(
+      "[data-test=testedComponent]",
+    );
+
+    element.birthdate = new Date(1990, 10, 7);
+    element.birthdate = new Date(1990, 10, 7);
+
+    const differencesList = element.shadowRoot.querySelectorAll(
+      "[data-test=difference-line]",
+    );
+    expect(differencesList.length).toBe(1);
+  });
 });
