@@ -28,6 +28,9 @@ export const componentWith = (
     set birthdate(birthdate: Date) {
       this.birthdateComponent.date = birthdate;
       this.differencesListComponent.classList.remove("hidden");
+      this.differencesListComponent.appendChild(templateLine.content.cloneNode(
+        true,
+      ));
     }
   }
 
@@ -36,6 +39,11 @@ export const componentWith = (
     <div><bc-date data-test="today"></bc-date></div>
     <div><bc-date data-test="birthdate"></bc-date></div>
     <div data-test="differences-list" class="hidden"></div>
+  `;
+
+  const templateLine = customWindow.document.createElement("template");
+  templateLine.innerHTML = `
+    <div data-test="difference-line"><span>name</span></div>
   `;
 
   customWindow.customElements.define(

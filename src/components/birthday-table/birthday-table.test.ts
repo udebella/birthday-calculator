@@ -63,4 +63,17 @@ describe("Birthday Table component", () => {
     );
     expect(differencesList.classList.contains("hidden")).toBe(true);
   });
+
+  it("adds differences lines when setting the birthdate", () => {
+    const element = customWindow.document.querySelector(
+      "[data-test=testedComponent]",
+    );
+
+    element.birthdate = new Date(1990, 10, 7);
+
+    const differencesList = element.shadowRoot.querySelector(
+      "[data-test=difference-line]",
+    );
+    expect(differencesList.textContent).toBe("name");
+  });
 });
