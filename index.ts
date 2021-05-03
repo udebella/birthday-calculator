@@ -1,10 +1,10 @@
 import { format } from "./src/deps.ts";
 import {
-  birthdayCalculator,
+  buildBirthdayCalculator,
   differences as differenceTypes,
 } from "./src/services/birthday-calculator/birthday-calculator.ts";
 
-const { compute } = birthdayCalculator({
+const birthdayCalculator = buildBirthdayCalculator({
   today: new Date(),
   differenceTypes,
 });
@@ -23,7 +23,7 @@ const familly = {
 Object.entries(familly)
   .forEach(([name, birthDate]) => {
     console.log(name, format(birthDate, "dd MMMM yyyy HH:mm:ss", {}));
-    console.table(compute(birthDate));
+    console.table(birthdayCalculator(birthDate));
   });
 
 // 2 (x - age1) = x - age2

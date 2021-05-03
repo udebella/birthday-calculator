@@ -25,7 +25,7 @@ interface DifferenceType {
   addFunction: AddFunction;
 }
 
-interface BirthdayCalculator {
+interface Dependencies {
   today: Date;
   differenceTypes: DifferenceType[];
 }
@@ -64,8 +64,19 @@ export const differences: DifferenceType[] = [
   },
 ];
 
-export const birthdayCalculator = (
-  { today, differenceTypes }: BirthdayCalculator,
+interface BirthdayDifferences {
+  name: string;
+  difference: number;
+  nextFloor: number;
+  dateForNext: Date;
+}
+export type BirthdayCalculator = (birthday: Date) => BirthdayDifferences[];
+type BirthdayCalculatorBuilder = (
+  dependencies: Dependencies,
+) => BirthdayCalculator;
+
+export const buildBirthdayCalculator: BirthdayCalculatorBuilder = (
+  { today, differenceTypes }: Dependencies,
 ) =>
   (birthday: Date) =>
     differenceTypes

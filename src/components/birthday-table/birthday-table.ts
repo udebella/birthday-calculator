@@ -1,8 +1,10 @@
 import { CustomComponent } from "../component.ts";
+import { BirthdayCalculator } from "../../services/birthday-calculator/birthday-calculator.ts";
 
 interface Dependencies {
   // deno-lint-ignore no-explicit-any
   customWindow: any;
+  birthdayCalculator: BirthdayCalculator;
 }
 
 export const componentWith = (

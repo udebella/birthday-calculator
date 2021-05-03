@@ -6,12 +6,16 @@ import {
   describe,
   expect,
   it,
+  mock,
 } from "../../deps.test.ts";
+import { BirthdayCalculator } from "../../services/birthday-calculator/birthday-calculator.ts";
 
 describe("Birthday Table component", () => {
   beforeAll(() => {
+    const birthdayCalculator: BirthdayCalculator = mock.fn();
     componentWith({
       customWindow,
+      birthdayCalculator,
     });
   });
 

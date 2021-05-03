@@ -28,11 +28,51 @@ function toDate(argument) {
         return new Date(NaN);
     }
 }
+function addDays(dirtyDate, dirtyAmount) {
+    requiredArgs(2, arguments);
+    var date = toDate(dirtyDate);
+    var amount = toInteger(dirtyAmount);
+    if (isNaN(amount)) {
+        return new Date(NaN);
+    }
+    if (!amount) {
+        return date;
+    }
+    date.setDate(date.getDate() + amount);
+    return date;
+}
+function addMonths(dirtyDate, dirtyAmount) {
+    requiredArgs(2, arguments);
+    var date = toDate(dirtyDate);
+    var amount = toInteger(dirtyAmount);
+    if (isNaN(amount)) {
+        return new Date(NaN);
+    }
+    if (!amount) {
+        return date;
+    }
+    var dayOfMonth = date.getDate();
+    var endOfDesiredMonth = new Date(date.getTime());
+    endOfDesiredMonth.setMonth(date.getMonth() + amount + 1, 0);
+    var daysInMonth = endOfDesiredMonth.getDate();
+    if (dayOfMonth >= daysInMonth) {
+        return endOfDesiredMonth;
+    } else {
+        date.setFullYear(endOfDesiredMonth.getFullYear(), endOfDesiredMonth.getMonth(), dayOfMonth);
+        return date;
+    }
+}
 function addMilliseconds(dirtyDate, dirtyAmount) {
     requiredArgs(2, arguments);
     var timestamp = toDate(dirtyDate).getTime();
     var amount = toInteger(dirtyAmount);
     return new Date(timestamp + amount);
+}
+var MILLISECONDS_IN_HOUR = 3600000;
+function addHours(dirtyDate, dirtyAmount) {
+    requiredArgs(2, arguments);
+    var amount = toInteger(dirtyAmount);
+    return addMilliseconds(dirtyDate, amount * MILLISECONDS_IN_HOUR);
 }
 var MILLISECONDS_IN_MINUTE = 60000;
 function getDateMillisecondsPart(date) {
@@ -46,10 +86,146 @@ function getTimezoneOffsetInMilliseconds(dirtyDate) {
     var millisecondsPartOfTimezoneOffset = hasNegativeUTCOffset ? (MILLISECONDS_IN_MINUTE + getDateMillisecondsPart(date)) % MILLISECONDS_IN_MINUTE : getDateMillisecondsPart(date);
     return baseTimezoneOffset * MILLISECONDS_IN_MINUTE + millisecondsPartOfTimezoneOffset;
 }
+function startOfDay(dirtyDate) {
+    requiredArgs(1, arguments);
+    var date = toDate(dirtyDate);
+    date.setHours(0, 0, 0, 0);
+    return date;
+}
+var MILLISECONDS_IN_DAY = 86400000;
+function differenceInCalendarDays(dirtyDateLeft, dirtyDateRight) {
+    requiredArgs(2, arguments);
+    var startOfDayLeft = startOfDay(dirtyDateLeft);
+    var startOfDayRight = startOfDay(dirtyDateRight);
+    var timestampLeft = startOfDayLeft.getTime() - getTimezoneOffsetInMilliseconds(startOfDayLeft);
+    var timestampRight = startOfDayRight.getTime() - getTimezoneOffsetInMilliseconds(startOfDayRight);
+    return Math.round((timestampLeft - timestampRight) / MILLISECONDS_IN_DAY);
+}
+var MILLISECONDS_IN_MINUTE1 = 60000;
+function addMinutes(dirtyDate, dirtyAmount) {
+    requiredArgs(2, arguments);
+    var amount = toInteger(dirtyAmount);
+    return addMilliseconds(dirtyDate, amount * MILLISECONDS_IN_MINUTE1);
+}
+function addSeconds(dirtyDate, dirtyAmount) {
+    requiredArgs(2, arguments);
+    var amount = toInteger(dirtyAmount);
+    return addMilliseconds(dirtyDate, amount * 1000);
+}
+function addWeeks(dirtyDate, dirtyAmount) {
+    requiredArgs(2, arguments);
+    var amount = toInteger(dirtyAmount);
+    var days = amount * 7;
+    return addDays(dirtyDate, days);
+}
+function addYears(dirtyDate, dirtyAmount) {
+    requiredArgs(2, arguments);
+    var amount = toInteger(dirtyAmount);
+    return addMonths(dirtyDate, amount * 12);
+}
+function compareAsc(dirtyDateLeft, dirtyDateRight) {
+    requiredArgs(2, arguments);
+    var dateLeft = toDate(dirtyDateLeft);
+    var dateRight = toDate(dirtyDateRight);
+    var diff = dateLeft.getTime() - dateRight.getTime();
+    if (diff < 0) {
+        return -1;
+    } else if (diff > 0) {
+        return 1;
+    } else {
+        return diff;
+    }
+}
 function isValid(dirtyDate) {
     requiredArgs(1, arguments);
     var date = toDate(dirtyDate);
     return !isNaN(date);
+}
+function differenceInCalendarMonths(dirtyDateLeft, dirtyDateRight) {
+    requiredArgs(2, arguments);
+    var dateLeft = toDate(dirtyDateLeft);
+    var dateRight = toDate(dirtyDateRight);
+    var yearDiff = dateLeft.getFullYear() - dateRight.getFullYear();
+    var monthDiff = dateLeft.getMonth() - dateRight.getMonth();
+    return yearDiff * 12 + monthDiff;
+}
+function differenceInCalendarYears(dirtyDateLeft, dirtyDateRight) {
+    requiredArgs(2, arguments);
+    var dateLeft = toDate(dirtyDateLeft);
+    var dateRight = toDate(dirtyDateRight);
+    return dateLeft.getFullYear() - dateRight.getFullYear();
+}
+function compareLocalAsc(dateLeft, dateRight) {
+    var diff = dateLeft.getFullYear() - dateRight.getFullYear() || dateLeft.getMonth() - dateRight.getMonth() || dateLeft.getDate() - dateRight.getDate() || dateLeft.getHours() - dateRight.getHours() || dateLeft.getMinutes() - dateRight.getMinutes() || dateLeft.getSeconds() - dateRight.getSeconds() || dateLeft.getMilliseconds() - dateRight.getMilliseconds();
+    if (diff < 0) {
+        return -1;
+    } else if (diff > 0) {
+        return 1;
+    } else {
+        return diff;
+    }
+}
+function differenceInDays(dirtyDateLeft, dirtyDateRight) {
+    requiredArgs(2, arguments);
+    var dateLeft = toDate(dirtyDateLeft);
+    var dateRight = toDate(dirtyDateRight);
+    var sign = compareLocalAsc(dateLeft, dateRight);
+    var difference = Math.abs(differenceInCalendarDays(dateLeft, dateRight));
+    dateLeft.setDate(dateLeft.getDate() - sign * difference);
+    var isLastDayNotFull = compareLocalAsc(dateLeft, dateRight) === -sign;
+    var result = sign * (difference - isLastDayNotFull);
+    return result === 0 ? 0 : result;
+}
+function differenceInMilliseconds(dirtyDateLeft, dirtyDateRight) {
+    requiredArgs(2, arguments);
+    var dateLeft = toDate(dirtyDateLeft);
+    var dateRight = toDate(dirtyDateRight);
+    return dateLeft.getTime() - dateRight.getTime();
+}
+var MILLISECONDS_IN_HOUR1 = 3600000;
+function differenceInHours(dirtyDateLeft, dirtyDateRight) {
+    requiredArgs(2, arguments);
+    var diff = differenceInMilliseconds(dirtyDateLeft, dirtyDateRight) / MILLISECONDS_IN_HOUR1;
+    return diff > 0 ? Math.floor(diff) : Math.ceil(diff);
+}
+var MILLISECONDS_IN_MINUTE2 = 60000;
+function differenceInMinutes(dirtyDateLeft, dirtyDateRight) {
+    requiredArgs(2, arguments);
+    var diff = differenceInMilliseconds(dirtyDateLeft, dirtyDateRight) / MILLISECONDS_IN_MINUTE2;
+    return diff > 0 ? Math.floor(diff) : Math.ceil(diff);
+}
+function differenceInMonths(dirtyDateLeft, dirtyDateRight) {
+    requiredArgs(2, arguments);
+    var dateLeft = toDate(dirtyDateLeft);
+    var dateRight = toDate(dirtyDateRight);
+    var sign = compareAsc(dateLeft, dateRight);
+    var difference = Math.abs(differenceInCalendarMonths(dateLeft, dateRight));
+    dateLeft.setMonth(dateLeft.getMonth() - sign * difference);
+    var isLastMonthNotFull = compareAsc(dateLeft, dateRight) === -sign;
+    var result = sign * (difference - isLastMonthNotFull);
+    return result === 0 ? 0 : result;
+}
+function differenceInSeconds(dirtyDateLeft, dirtyDateRight) {
+    requiredArgs(2, arguments);
+    var diff = differenceInMilliseconds(dirtyDateLeft, dirtyDateRight) / 1000;
+    return diff > 0 ? Math.floor(diff) : Math.ceil(diff);
+}
+function differenceInWeeks(dirtyDateLeft, dirtyDateRight) {
+    requiredArgs(2, arguments);
+    var diff = differenceInDays(dirtyDateLeft, dirtyDateRight) / 7;
+    return diff > 0 ? Math.floor(diff) : Math.ceil(diff);
+}
+function differenceInYears(dirtyDateLeft, dirtyDateRight) {
+    requiredArgs(2, arguments);
+    var dateLeft = toDate(dirtyDateLeft);
+    var dateRight = toDate(dirtyDateRight);
+    var sign = compareAsc(dateLeft, dateRight);
+    var difference = Math.abs(differenceInCalendarYears(dateLeft, dateRight));
+    dateLeft.setFullYear('1584');
+    dateRight.setFullYear('1584');
+    var isLastYearNotFull = compareAsc(dateLeft, dateRight) === -sign;
+    var result = sign * (difference - isLastYearNotFull);
+    return result === 0 ? 0 : result;
 }
 var formatDistanceLocale = {
     lessThanXSeconds: {
@@ -711,7 +887,7 @@ var formatters = {
         return addLeadingZeros(fractionalSeconds, token.length);
     }
 };
-var MILLISECONDS_IN_DAY = 86400000;
+var MILLISECONDS_IN_DAY1 = 86400000;
 function getUTCDayOfYear(dirtyDate) {
     requiredArgs(1, arguments);
     var date = toDate(dirtyDate);
@@ -720,7 +896,7 @@ function getUTCDayOfYear(dirtyDate) {
     date.setUTCHours(0, 0, 0, 0);
     var startOfYearTimestamp = date.getTime();
     var difference = timestamp - startOfYearTimestamp;
-    return Math.floor(difference / MILLISECONDS_IN_DAY) + 1;
+    return Math.floor(difference / MILLISECONDS_IN_DAY1) + 1;
 }
 function startOfUTCISOWeek(dirtyDate) {
     requiredArgs(1, arguments);
@@ -1629,23 +1805,88 @@ const componentWith1 = ({ customWindow  })=>{
             });
             this.shadowRoot.appendChild(template.content.cloneNode(true));
             this.birthdateComponent = this.shadowRoot.querySelector("[data-test=birthdate]");
+            this.differencesListComponent = this.shadowRoot.querySelector("[data-test=differences-list]");
         }
         static componentName() {
             return "bc-birthday-table";
         }
         set birthdate(birthdate) {
             this.birthdateComponent.date = birthdate;
+            this.differencesListComponent.classList.remove("hidden");
+            this.differencesListComponent.innerHTML = "";
+            this.differencesListComponent.appendChild(templateLine.content.cloneNode(true));
         }
     }
     const template = customWindow.document.createElement("template");
-    template.innerHTML = `\n    <div><bc-date data-test="today"></bc-date></div>\n    <div><bc-date data-test="birthdate"></bc-date></div>\n  `;
+    template.innerHTML = `\n    <div><bc-date data-test="today"></bc-date></div>\n    <div><bc-date data-test="birthdate"></bc-date></div>\n    <div data-test="differences-list" class="hidden"></div>\n  `;
+    const templateLine = customWindow.document.createElement("template");
+    templateLine.innerHTML = `\n    <div data-test="difference-line"><span>name</span></div>\n  `;
     customWindow.customElements.define(BCBirthdayTable.componentName(), BCBirthdayTable);
     return BCBirthdayTable;
 };
+function nextFloor(number) {
+    if (number >= 10) {
+        return nextFloor(number / 10) * 10;
+    }
+    return Math.floor(number) + 1;
+}
+const differences = [
+    {
+        name: "years",
+        differenceFunction: differenceInYears,
+        addFunction: addYears
+    },
+    {
+        name: "months",
+        differenceFunction: differenceInMonths,
+        addFunction: addMonths
+    },
+    {
+        name: "weeks",
+        differenceFunction: differenceInWeeks,
+        addFunction: addWeeks
+    },
+    {
+        name: "days",
+        differenceFunction: differenceInDays,
+        addFunction: addDays
+    },
+    {
+        name: "hours",
+        differenceFunction: differenceInHours,
+        addFunction: addHours
+    },
+    {
+        name: "minutes",
+        differenceFunction: differenceInMinutes,
+        addFunction: addMinutes
+    },
+    {
+        name: "seconds",
+        differenceFunction: differenceInSeconds,
+        addFunction: addSeconds
+    }, 
+];
+const buildBirthdayCalculator = ({ today , differenceTypes  })=>(birthday)=>differenceTypes.map(({ name , differenceFunction , addFunction  })=>{
+            const difference = differenceFunction(today, birthday);
+            const nextFloor1 = nextFloor(difference);
+            return {
+                name,
+                difference,
+                nextFloor: nextFloor1,
+                dateForNext: addFunction(birthday, nextFloor1)
+            };
+        })
+;
+const birthdayCalculator = buildBirthdayCalculator({
+    today: new Date(),
+    differenceTypes: differences
+});
 componentWith({
     customWindow: window,
     dateGenerator: ()=>new Date()
 });
 componentWith1({
-    customWindow: window
+    customWindow: window,
+    birthdayCalculator
 });

@@ -1,4 +1,4 @@
-import { birthdayCalculator } from "./birthday-calculator.ts";
+import { buildBirthdayCalculator } from "./birthday-calculator.ts";
 import { expect, it, mock } from "../../deps.test.ts";
 
 it("should display the result of the difference function between given dates", () => {
@@ -6,7 +6,7 @@ it("should display the result of the difference function between given dates", (
   const birthday = new Date(2021, 3, 18);
   const differenceFunction = mock.fn(() => 5);
   const addFunction = mock.fn(() => new Date(2021, 3, 24));
-  const calculator = birthdayCalculator({
+  const calculator = buildBirthdayCalculator({
     today,
     differenceTypes: [{ name: "example", differenceFunction, addFunction }],
   });
