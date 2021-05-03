@@ -66,19 +66,16 @@ export const differences: DifferenceType[] = [
 
 export const birthdayCalculator = (
   { today, differenceTypes }: BirthdayCalculator,
-) => {
-  return {
-    compute: (birthday: Date) =>
-      differenceTypes
-        .map(({ name, differenceFunction, addFunction }) => {
-          const difference = differenceFunction(today, birthday);
-          const nextFloor = nextFloorFunction(difference);
-          return ({
-            name,
-            difference,
-            nextFloor,
-            dateForNext: addFunction(birthday, nextFloor),
-          });
-        }),
-  };
-};
+) =>
+  (birthday: Date) =>
+    differenceTypes
+      .map(({ name, differenceFunction, addFunction }) => {
+        const difference = differenceFunction(today, birthday);
+        const nextFloor = nextFloorFunction(difference);
+        return ({
+          name,
+          difference,
+          nextFloor,
+          dateForNext: addFunction(birthday, nextFloor),
+        });
+      });

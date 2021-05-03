@@ -11,7 +11,7 @@ it("should display the result of the difference function between given dates", (
     differenceTypes: [{ name: "example", differenceFunction, addFunction }],
   });
 
-  const result = calculator.compute(birthday);
+  const result = calculator(birthday);
 
   expect(result).toEqual([{
     name: "example",
